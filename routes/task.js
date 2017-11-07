@@ -48,28 +48,28 @@ router.get('/tasks', function (req, res) {
 		task.assignedUser = req.body.assignedUser;
 		task.type = req.body.type;
 		task.assignedUserName = req.body.assignedUserName;
-		task.dateCreated = req.body.dateCreated;
 
-		task.save(function(err, result) {
+		task.save(function(err, task) {
 
 			if(err){
-				res.status(404);
+				res.status(500);
 				res.json({message:'An error has occurred'});
 				return console.error(err);			
+    		}else if(task==null){
+				res.status(404);
+				res.json({message:'404 not found'});
     		}else{
     			res.status(201);
 				res.json({message:'A task is created',data: task});
 			}
 		})
-
-
     });
 
 	router.get('/tasks/:id', function (req, res) {
 		Task.findById(req.params.id, function(err, task){
 			if(err){
-				res.status(404);
-				res.json({message:'Cannot find the task'});
+				res.status(500);
+				res.json({message:'Server error'});
 				return console.error(err);			
     		}else if(task==null){
 				res.status(404);

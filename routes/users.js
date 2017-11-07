@@ -42,7 +42,6 @@ module.exports = function (router,db) {
 		user.name = req.body.name;
 		user.email = req.body.email;
 		user.pendingTasks = req.body.pendingTasks;
-		user.dateCreated = req.body.dateCreated;
 		user.save(function(err, result) {
 
 			if(err){
