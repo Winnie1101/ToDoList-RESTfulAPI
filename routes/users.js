@@ -9,18 +9,31 @@ module.exports = function (router,db) {
 		var QuerySkip = eval("("+req.query.skip+")");
 		var QueryLimit = eval("("+req.query.limit+")");
 		var QueryCount = eval("("+req.query.count+")");
-
-		User.find(QueryWhere).sort(QuerySort).select(QuerySelect).skip(QuerySkip).limit(QueryLimit).count(QueryCount).exec(function(err,users){
+		if(QueryCount){
+			User.count(QueryCount).exec(function(err,users){
 			if(err){
 				res.status(500);
 				res.json({message:'Server error'});
 				res.send(err);
 			}else{
 				res.status(200);
-				res.json({message:'All the users are listed',data:users});
+				res.json({message:'The number of users is in the data',data:users});
 			}
 
 		});
+		}else{
+			User.find(QueryWhere).sort(QuerySort).select(QuerySelect).skip(QuerySkip).limit(QueryLimit).exec(function(err,users){
+				if(err){
+					res.status(500);
+					res.json({message:'Server error'});
+					res.send(err);
+				}else{
+					res.status(200);
+					res.json({message:'All the users are listed',data:users});
+				}
+
+			});
+		}
 
     });
 

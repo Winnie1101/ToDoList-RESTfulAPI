@@ -17,15 +17,15 @@ var TaskSchema = new mongoose.Schema({
     assignedUser: {
     type: String,
     default: [""]
-  },
+    },
     assignedUserName: {
     type: String,
     default: ["unassigned"]
-  },
+    },
     dateCreated: {
     type: Date,
     default: Date.now
-  }
+    }
 });
 
 // Export the Mongoose model

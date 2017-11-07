@@ -10,18 +10,32 @@ router.get('/tasks', function (req, res) {
 		var QuerySkip = eval("("+req.query.skip+")");
 		var QueryLimit = eval("("+req.query.limit+")");
 		var QueryCount = eval("("+req.query.count+")");
-
-		Task.find(QueryWhere).sort(QuerySort).select(QuerySelect).skip(QuerySkip).limit(QueryLimit).count(QueryCount).exec(function(err,tasks){
+		if(QueryCount){
+			Task.count(QueryCount).exec(function(err,tasks){
 			if(err){
 				res.status(500);
 				res.json({message:'Server error'});
 				res.send(err);
 			}else{
 				res.status(200);
-				res.json({message:'All the tasks are listed',data:tasks});
+				res.json({message:'The number of tasks is in the data',data:tasks});
 			}
 
 		});
+		}else{
+			Task.find(QueryWhere).sort(QuerySort).select(QuerySelect).skip(QuerySkip).limit(QueryLimit).exec(function(err,tasks){
+				if(err){
+					res.status(500);
+					res.json({message:'Server error'});
+					res.send(err);
+				}else{
+					res.status(200);
+					res.json({message:'All the tasks are listed',data:tasks});
+				}
+
+			});
+		}
+
 
     });
 
