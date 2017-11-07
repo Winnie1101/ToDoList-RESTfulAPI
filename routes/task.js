@@ -58,6 +58,7 @@ router.get('/tasks', function (req, res) {
     		}else if(task==null){
 				res.status(404);
 				res.json({message:'404 not found'});
+				
     		}else{
     			res.status(201);
 				res.json({message:'A task is created',data: task});
