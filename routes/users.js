@@ -50,7 +50,7 @@ module.exports = function (router,db) {
 				return console.error(err);			
     		}else{
     			res.status(201);
-				res.json({message:'A user is created',data: user});
+				res.json({message:'A user is created',data: result});
 			}
 		})
 
