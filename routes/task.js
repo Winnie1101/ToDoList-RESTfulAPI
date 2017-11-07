@@ -11,7 +11,7 @@ router.get('/tasks', function (req, res) {
 		var QueryLimit = eval("("+req.query.limit+")");
 		var QueryCount = eval("("+req.query.count+")");
 
-		Task.find(QueryWhere).sort(QuerySort).select(QuerySelect).skip(QuerySkip).limit(QueryLimit).exec(function(err,tasks){
+		Task.find(QueryWhere).sort(QuerySort).select(QuerySelect).skip(QuerySkip).limit(QueryLimit).count(QueryCount).exec(function(err,tasks){
 			if(err){
 				res.status(500);
 				res.json({message:'Server error'});
@@ -57,6 +57,9 @@ router.get('/tasks', function (req, res) {
 				res.status(404);
 				res.json({message:'Cannot find the task'});
 				return console.error(err);			
+    		}else if(task==null){
+				res.status(404);
+				res.json({message:'Cannot find the task'});
     		}else{
     			res.status(200);
 				res.json({message:'The task is found',data: task});
@@ -103,6 +106,9 @@ router.get('/tasks', function (req, res) {
 				res.status(404);
 				res.json({message:'Cannot find the task'});
 				return console.error(err);			
+    		}else if(task==null){
+				res.status(404);
+				res.json({message:'Cannot find the task'});
     		}else{
 				Task.remove({_id: req.params.id}, function(err){
 					if(err){

@@ -10,7 +10,7 @@ module.exports = function (router,db) {
 		var QueryLimit = eval("("+req.query.limit+")");
 		var QueryCount = eval("("+req.query.count+")");
 
-		User.find(QueryWhere).sort(QuerySort).select(QuerySelect).skip(QuerySkip).limit(QueryLimit).exec(function(err,users){
+		User.find(QueryWhere).sort(QuerySort).select(QuerySelect).skip(QuerySkip).limit(QueryLimit).count(QueryCount).exec(function(err,users){
 			if(err){
 				res.status(500);
 				res.json({message:'Server error'});
@@ -50,6 +50,9 @@ module.exports = function (router,db) {
 				res.status(404);
 				res.json({message:'Cannot find the user'});
 				return console.error(err);			
+    		}else if(user==null){
+				res.status(404);
+				res.json({message:'Cannot find the user'});
     		}else{
     			res.status(200);
 				res.json({message:'The user is found',data: user});
@@ -92,6 +95,9 @@ module.exports = function (router,db) {
 				res.status(404);
 				res.json({message:'Cannot find the user'});
 				return console.error(err);			
+    		}else if(user==null){
+				res.status(404);
+				res.json({message:'Cannot find the user'});
     		}else{
 				User.remove({_id: req.params.id}, function(err){
 					if(err){
