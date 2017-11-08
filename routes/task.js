@@ -23,17 +23,32 @@ router.get('/tasks', function (req, res) {
 
 		});
 		}else{
-			Task.find(QueryWhere).sort(QuerySort).select(QuerySelect).skip(QuerySkip).limit(QueryLimit).exec(function(err,tasks){
-				if(err){
-					res.status(500);
-					res.json({message:'Server error'});
-					res.send(err);
-				}else{
-					res.status(200);
-					res.json({message:'All the tasks are listed',data:tasks});
-				}
+			if(QueryLimit==null){
+				Task.find(QueryWhere).sort(QuerySort).select(QuerySelect).skip(QuerySkip).limit(JSON.parse(100)).exec(function(err,tasks){
+					if(err){
+						res.status(500);
+						res.json({message:'Server error'});
+						res.send(err);
+					}else{
+						res.status(200);
+						res.json({message:'All the tasks are listed',data:tasks});
+					}
 
-			});
+				});
+
+			}else{
+				Task.find(QueryWhere).sort(QuerySort).select(QuerySelect).skip(QuerySkip).limit(QueryLimit).exec(function(err,tasks){
+					if(err){
+						res.status(500);
+						res.json({message:'Server error'});
+						res.send(err);
+					}else{
+						res.status(200);
+						res.json({message:'All the tasks are listed',data:tasks});
+					}
+
+				});
+			}
 		}
 
 
@@ -58,7 +73,7 @@ router.get('/tasks', function (req, res) {
     		}else if(task==null){
 				res.status(404);
 				res.json({message:'404 not found'});
-				
+
     		}else{
     			res.status(201);
 				res.json({message:'A task is created',data: task});
@@ -125,14 +140,14 @@ router.get('/tasks', function (req, res) {
 				res.status(404);
 				res.json({message:'Cannot find the task'});
     		}else{
-				Task.remove({_id: req.params.id}, function(err){
+				Task.remove({_id: req.params.id}, function(err,result){
 					if(err){
 						res.status(404);
 						res.json({message:'An error has occurred'});
 						return console.error(err);			
 		    		}else{
 		    			res.status(200);
-						res.json({message:'The task is deleted'});
+						res.json({message:'The task is deleted', data: result});
 					}
 				}) 			
 			}
