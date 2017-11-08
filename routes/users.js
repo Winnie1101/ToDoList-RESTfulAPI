@@ -13,11 +13,11 @@ module.exports = function (router,db) {
 			User.count(QueryCount).exec(function(err,users){
 			if(err){
 				res.status(500);
-				res.json({message:'Server error'});
+				res.json({message:'Server error', data:users});
 				res.send(err);
 			}else{
 				res.status(200);
-				res.json({message:'The number of users is in the data',data:users});
+				res.json({message:'The number of users is in the data', data:users});
 			}
 
 		});
@@ -25,7 +25,7 @@ module.exports = function (router,db) {
 			User.find(QueryWhere).sort(QuerySort).select(QuerySelect).skip(QuerySkip).limit(QueryLimit).exec(function(err,users){
 				if(err){
 					res.status(500);
-					res.json({message:'Server error'});
+					res.json({message:'Server error', data:users});
 					res.send(err);
 				}else{
 					res.status(200);
@@ -46,7 +46,7 @@ module.exports = function (router,db) {
 
 			if(err){
 				res.status(404);
-				res.json({message:'An error has occurred'});
+				res.json({message:'An error has occurred',data: result});
 				return console.error(err);			
     		}else{
     			res.status(201);
@@ -60,11 +60,11 @@ module.exports = function (router,db) {
 		User.findById(req.params.id, function(err, user){
 			if(err){
 				res.status(404);
-				res.json({message:'Cannot find the user'});
+				res.json({message:'Cannot find the user',data: user});
 				return console.error(err);			
     		}else if(user==null){
 				res.status(404);
-				res.json({message:'Cannot find the user'});
+				res.json({message:'Cannot find the user',data: user});
     		}else{
     			res.status(200);
 				res.json({message:'The user is found',data: user});
@@ -78,7 +78,7 @@ module.exports = function (router,db) {
 		User.findById(req.params.id, function(err, user){
 			if(err){
 				res.status(404);
-				res.json({message:'Cannot find the user'});
+				res.json({message:'Cannot find the user',data: user});
 				return console.error(err);			
     		}else{
 				user.name = req.body.name;
@@ -88,7 +88,7 @@ module.exports = function (router,db) {
 				user.save(function(err, result){
 					if(err){
 						res.status(404);
-						res.json({message:'An error has occurred'});
+						res.json({message:'An error has occurred',data: user});
 						return console.error(err);			
 		    		}else{
 		    			res.status(200);
@@ -105,20 +105,20 @@ module.exports = function (router,db) {
 		User.findById(req.params.id, function(err, user){
 			if(err){
 				res.status(404);
-				res.json({message:'Cannot find the user'});
+				res.json({message:'Cannot find the user',data: user});
 				return console.error(err);			
     		}else if(user==null){
 				res.status(404);
-				res.json({message:'Cannot find the user'});
+				res.json({message:'Cannot find the user',data: user});
     		}else{
-				User.remove({_id: req.params.id}, function(err){
+				User.remove({_id: req.params.id}, function(err,user){
 					if(err){
 						res.status(404);
-						res.json({message:'An error has occurred'});
+						res.json({message:'An error has occurred',data: user});
 						return console.error(err);			
 		    		}else{
 		    			res.status(200);
-						res.json({message:'The user is deleted'});
+						res.json({message:'The user is deleted',data: user});
 					}
 				}) 			
 			}

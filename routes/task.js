@@ -14,7 +14,7 @@ router.get('/tasks', function (req, res) {
 			Task.count(QueryCount).exec(function(err,tasks){
 			if(err){
 				res.status(500);
-				res.json({message:'Server error'});
+				res.json({message:'Server error', data:tasks});
 				res.send(err);
 			}else{
 				res.status(200);
@@ -27,11 +27,11 @@ router.get('/tasks', function (req, res) {
 				Task.find(QueryWhere).sort(QuerySort).select(QuerySelect).skip(QuerySkip).limit(JSON.parse(100)).exec(function(err,tasks){
 					if(err){
 						res.status(500);
-						res.json({message:'Server error'});
+						res.json({message:'Server error', data:tasks});
 						res.send(err);
 					}else{
 						res.status(200);
-						res.json({message:'All the tasks are listed',data:tasks});
+						res.json({message:'All the tasks are listed', data:tasks});
 					}
 
 				});
@@ -40,7 +40,7 @@ router.get('/tasks', function (req, res) {
 				Task.find(QueryWhere).sort(QuerySort).select(QuerySelect).skip(QuerySkip).limit(QueryLimit).exec(function(err,tasks){
 					if(err){
 						res.status(500);
-						res.json({message:'Server error'});
+						res.json({message:'Server error', data:tasks});
 						res.send(err);
 					}else{
 						res.status(200);
@@ -68,11 +68,11 @@ router.get('/tasks', function (req, res) {
 
 			if(err){
 				res.status(500);
-				res.json({message:'An error has occurred'});
+				res.json({message:'An error has occurred',data: task});
 				return console.error(err);			
     		}else if(task==null){
 				res.status(404);
-				res.json({message:'404 not found'});
+				res.json({message:'404 not found',data: task});
 
     		}else{
     			res.status(201);
@@ -85,11 +85,11 @@ router.get('/tasks', function (req, res) {
 		Task.findById(req.params.id, function(err, task){
 			if(err){
 				res.status(500);
-				res.json({message:'Server error'});
+				res.json({message:'Server error',data: task});
 				return console.error(err);			
     		}else if(task==null){
 				res.status(404);
-				res.json({message:'Cannot find the task'});
+				res.json({message:'Cannot find the task',data: task});
     		}else{
     			res.status(200);
 				res.json({message:'The task is found',data: task});
@@ -103,7 +103,7 @@ router.get('/tasks', function (req, res) {
 		Task.findById(req.params.id, function(err, task){
 			if(err){
 				res.status(404);
-				res.json({message:'Cannot find the task'});
+				res.json({message:'Cannot find the task',data: task});
 				return console.error(err);			
     		}else{
 				task.name = req.body.name;
@@ -117,7 +117,7 @@ router.get('/tasks', function (req, res) {
 				task.save(function(err, result){
 					if(err){
 						res.status(404);
-						res.json({message:'An error has occurred'});
+						res.json({message:'An error has occurred',data: task});
 						return console.error(err);			
 		    		}else{
 		    			res.status(200);
@@ -134,16 +134,16 @@ router.get('/tasks', function (req, res) {
 		Task.findById(req.params.id, function(err, task){
 			if(err){
 				res.status(404);
-				res.json({message:'Cannot find the task'});
+				res.json({message:'Cannot find the task',data: task});
 				return console.error(err);			
     		}else if(task==null){
 				res.status(404);
-				res.json({message:'Cannot find the task'});
+				res.json({message:'Cannot find the task',data: task});
     		}else{
 				Task.remove({_id: req.params.id}, function(err,result){
 					if(err){
 						res.status(404);
-						res.json({message:'An error has occurred'});
+						res.json({message:'An error has occurred', data: result});
 						return console.error(err);			
 		    		}else{
 		    			res.status(200);
