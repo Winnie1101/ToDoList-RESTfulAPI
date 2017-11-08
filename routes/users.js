@@ -41,7 +41,7 @@ module.exports = function (router,db) {
     	var user = new User();
 		user.name = req.body.name;
 		user.email = req.body.email;
-		user.pendingTasks = req.body.pendingTasks;
+		user.pendingTasks = req.body.pendingTasks || [];
 		user.save(function(err, result) {
 
 			if(err){
