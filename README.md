@@ -1,8 +1,7 @@
 
-## Assignment
+## Introduction
 
-An API for task management using .
-
+An API for task management using Node.js, Express, MongoDB, Mongoose.
 
 ## To Start the Web
 1. Install dependencies:
